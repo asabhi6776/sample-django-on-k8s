@@ -1,0 +1,44 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: django-app
+spec:
+  replicas: 2  # Adjust as per your requirements
+  selector:
+    matchLabels:
+      app: django-app
+  template:
+    metadata:
+      labels:
+        app: django-app
+    spec:
+      containers:
+        - name: django-app
+          image: <your-docker-image>  # Replace with your Docker image URL
+          ports:
+            - containerPort: 8000  # Adjust port as per your Django app configuration
+          env:
+            - name: POSTGRES_DB_HOST
+              value: postgres-service  # Replace with your PostgreSQL host
+            - name: POSTGRES_DB_PORT
+              value: "5432"  # Replace with your PostgreSQL port
+            - name: POSTGRES_DB_NAME
+              value: django  # Replace with your PostgreSQL database name
+            - name: POSTGRES_DB_USER
+              value: django  # Replace with your PostgreSQL username
+            - name: POSTGRES_DB_PASSWORD
+              value: password123  # Replace with your PostgreSQL password
+          resources:
+            limits:
+              cpu: 1
+              memory: 1024
+          volumeMounts:
+            - name: static-files
+              mountPath: /app/static  # Adjust path as per your Django static files directory
+            - name: media-files
+              mountPath: /app/media  # Adjust path as per your Django media files directory
+      volumes:
+        - name: static-files
+          emptyDir: {}
+        - name: media-files
+          emptyDir: {}

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres-db
+spec:
+  replicas: 1  # Adjust as per your requirements
+  selector:
+    matchLabels:
+      app: postgres-db
+  template:
+    metadata:
+      labels:
+        app: postgres-db
+    spec:
+      containers:
+        - name: postgres-db
+          image: postgres:latest  # Adjust image version as per your PostgreSQL requirement
+          env:
+            - name: POSTGRES_USER
+              value: django  # Replace with your PostgreSQL username
+            - name: POSTGRES_PASSWORD
+              value: password123  # Replace with your PostgreSQL password
+            - name: POSTGRES_DB
+              value: django  # Replace with your PostgreSQL database name
+          resources:
+            limits:
+              cpu: 1
+              memory: 1024

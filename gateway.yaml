@@ -1,0 +1,18 @@
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+metadata:
+  name: django-gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - <your-domain>  # Replace with your domain name
+          gateways:
+            - django-gateway
+          http:
+            paths:
+              - path: /*
+                backend:
+                  serviceName: django-service
+                  servicePort: 80
